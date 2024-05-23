@@ -2,6 +2,7 @@ import numpy as np
 import sys
 import csv
 from algorithm import *
+from strassen_algorithm import *
 
 
 
@@ -26,4 +27,7 @@ if __name__ == "__main__":
         print("Wynik mnożenia: C = ")
         printMatrix(C)
         saveToFile(C, path)
-    
+
+
+    print(strassen(np.array(A), np.array(B)))
+    # print(strassen(np.array(tab)))
