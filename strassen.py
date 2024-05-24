@@ -12,22 +12,20 @@ if __name__ == "__main__":
         sys.exit(1)
     if len(sys.argv) > 4:
         print("Podano za dużo argumentów")
-    csv_files = sys.argv[1:]
+        sys.exit(1)
     
+    csv_files = sys.argv[1:]
+    path = csv_files[2]
+
     # Odczytanie Macierzy:
     A = readFile(csv_files[0])
     B = readFile(csv_files[1])
-    if len(A) != len(B):
-        print("Macierze A oraz B są innych rozmiarów")
-    path = csv_files[2]
-    C = None
-    if A != None and B != None:
-        C = brutalAlgorithm(A,B)
-    if C != None:
-        print("Wynik mnożenia: C = ")
-        printMatrix(C)
-        saveToFile(C, path)
-
-
-    print(strassen(np.array(A), np.array(B)))
-    # print(strassen(np.array(tab)))
+    
+    if validateMatrix(A, B) == False:
+        print("Liczba kolumn macierzy A jest inna niż liczba wierszy macierzy B")
+        sys.exit(1)
+    
+    C = multiplyMatrixStrassen(A, B)
+    
+    saveToFile(C,path)
+    

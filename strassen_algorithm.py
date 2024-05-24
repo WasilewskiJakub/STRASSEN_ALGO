@@ -1,13 +1,21 @@
 import numpy as np
+from matrixconvertion import *
 import csv
 import math
-
+import threading
 
 
 def makeSubmatrix(matrix):
     row, col = matrix.shape
     row3, col3 = row // 3, col // 3
     return matrix[:row3, :col3], matrix[:row3, col3:2*col3], matrix[:row3, 2*col3:], matrix[row3:2*row3, :col3], matrix[row3:2*row3, col3:2*col3], matrix[row3:2*row3, 2*col3:], matrix[2*row3:, :col3], matrix[2*row3:, col3:2*col3], matrix[2*row3:, 2*col3:]
+
+def multiplyMatrixStrassen(A, B):
+    rowA,colA = A.shape
+    rowB,colB = B.shape
+    A_padded, B_padded = matrixConvertion(A, B)
+    C_padded = strassen(A_padded,B_padded)
+    return C_padded[:rowA, :colB]
 
 def strassen(A,B):
     if len(A) == 1:
@@ -52,5 +60,3 @@ def strassen(A,B):
 
     C = np.vstack((np.hstack((C11, C12, C13)), np.hstack((C21, C22, C23)),np.hstack((C31, C32, C33))))
     return C 
-
-

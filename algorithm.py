@@ -1,16 +1,11 @@
 import numpy as np
 import csv
 import math
+from decimal import Decimal
 
 class BadSizeException(Exception):
     def __init__(self, *args: object) -> None:
         super().__init__(*args)
-
-def ifpow3(number):
-    if number <= 0:
-        return False
-    log = math.log(number,3)
-    return log.is_integer()
 
 def printMatrix(M):
     for rows in M:
@@ -22,15 +17,8 @@ def readFile(file):
         with open(file,'r',newline='') as stream:
             reader = csv.reader(stream)
             for row in reader:
-                Matrix.append([int(x) for x in row[0].split(";")])
-        height = len(Matrix)
-        
-        if ifpow3(height) == False:
-            raise BadSizeException("Rozmiar nie jest potęga liczby 3")
-        for row in Matrix:
-            if len(row) != height:
-                raise BadSizeException("Macierz nie jest kwadratowa")
-        return Matrix
+                Matrix.append([Decimal(x) for x in row[0].split(";")])
+        return np.array(Matrix)
     except FileNotFoundError:
         print("Can not read: " + file)
     except BadSizeException as e:
@@ -45,16 +33,18 @@ def saveToFile(C,path):
     print("Macierz zapisana do pliku " + path)
 
 def brutalAlgorithm(A, B):
-    def calculate(A,B,i,j):
-        sum = 0
-        for r in range(len(A[0])):
-            sum += A[i][r] * B[r][j]
-        return sum
-
+    
+    rowA, colA = A.shape
+    rowB, colB = B.shape
     C = []
-    for i in range(len(A)):
+    for i in range(rowA):
         row = []
-        for j in range(len(A[0])):
-            row.append(calculate(A,B,i,j))
+        for j in range(colB):
+            row.append(0)
         C.append(row)
-    return C
+
+    for i in range(rowA):
+        for j in range(colB):
+            for k in range(rowB):
+                C[i][j] += A[i][k] * B[k][j]
+    return np.array(C)
