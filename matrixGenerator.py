@@ -10,8 +10,9 @@ if __name__ == "__main__":
         print("Proszę podać parametry w kolejnosci rowA colA row B colB plik1.csv plik2.csv")
         sys.exit(1)
 
-    A = np.random.rand(int(sys.argv[1]), int(sys.argv[2]))
-    B = np.random.rand(int(sys.argv[3]), int(sys.argv[4]))
+    A = np.random.randint(-50, 50, size = (int(sys.argv[1]), int(sys.argv[2])))
+    
+    B = np.random.randint(-50, 50, size = (int(sys.argv[3]), int(sys.argv[4])))
     
     saveToFile(A, sys.argv[5])
     saveToFile(B, sys.argv[6])
